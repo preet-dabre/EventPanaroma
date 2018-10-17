@@ -11,10 +11,7 @@ import android.support.v4.app.ActivityCompat.requestPermissions
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.webkit.MimeTypeMap
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -131,7 +128,7 @@ class CreateEvent2 : AppCompatActivity() {
         {
             if(requestCode == PICKIMAGE2 && imageUploadStart2)
             {
-                val imageStatus2: TextView = findViewById(R.id.image_status2)
+                //val imageStatus2: TextView = findViewById(R.id.image_status2)
                 //intent contains the Uri of file which is used for uploading
                 val imageUri:Uri = data!!.data
 
@@ -140,13 +137,13 @@ class CreateEvent2 : AppCompatActivity() {
                 //imageSecondaryLink = riversRef.downloadUrl.result.toString()
                 val uploadTask = riversRef.putFile(imageUri)
 
-                val uploadStarted = "Uploading started"
-                imageStatus2.text = uploadStarted
+                //val uploadStarted = "Uploading started"
+                //imageStatus2.text = uploadStarted
 
                 uploadTask.addOnFailureListener { exception ->
                     // Handle unsuccessful uploads
 
-                    imageStatus2.text = exception.toString()
+                    //imageStatus2.text = exception.toString()
                 }.addOnSuccessListener {
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                     // ...
@@ -159,16 +156,17 @@ class CreateEvent2 : AppCompatActivity() {
                         imageSecondaryLink = "Exception"
                     }
                     imageUploaded2 = true
-                    imageStatus2.text = msg
+                    //imageStatus2.text = msg
                 }.addOnProgressListener {
                     val progress: Double = (100.0 * it.bytesTransferred / it.totalByteCount)
-                    val msg = "Progress: $progress%"
-                    imageStatus2.text = msg
+                    //val msg = "Progress: $progress%"
+                    //imageStatus2.text = msg
+                    findViewById<ProgressBar>(R.id.images_progress).progress = progress.toInt()
                 }
             }
             else if (requestCode == PICKIMAGE && imageUploadStart) {
 
-                val imageStatus: TextView = findViewById(R.id.image_status)
+                //val imageStatus: TextView = findViewById(R.id.image_status)
                 //intent contains the Uri of file which is used for uploading
                 val imageUri = data!!.data
 
@@ -177,17 +175,18 @@ class CreateEvent2 : AppCompatActivity() {
 
                 val uploadTask = riversRef.putFile(imageUri)
 
-                val uploadStarted = "Uploading started"
-                imageStatus.text = uploadStarted
+                //val uploadStarted = "Uploading started"
+                //imageStatus.text = uploadStarted
 
                 uploadTask.addOnFailureListener { exception ->
                     // Handle unsuccessful uploads
 
-                    imageStatus.text = exception.toString()
+                    //imageStatus.text = exception.toString()
                 }.addOnSuccessListener {
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                     // ...
-                    val msg = "Done uploading"
+                    //val msg = "Done uploading"
+                    /*****/
                     Toast.makeText(this, "Image uploaded", Toast.LENGTH_SHORT).show()
 
                     riversRef.downloadUrl.addOnSuccessListener {
@@ -198,12 +197,13 @@ class CreateEvent2 : AppCompatActivity() {
 
 
                     imageUploaded = true
-                    imageStatus.text = msg
+                    //imageStatus.text = msg
 
                 }.addOnProgressListener {
                     val progress: Double = (100.0 * it.bytesTransferred / it.totalByteCount)
-                    val msg = "Progress: $progress%"
-                    imageStatus.text = msg
+                    //val msg = "Progress: $progress%"
+                    //imageStatus.text = msg
+                    findViewById<ProgressBar>(R.id.imagep_progress).progress = progress.toInt()
                 }
 
             }

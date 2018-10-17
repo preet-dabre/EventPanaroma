@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_activity_without_title"
     tools:context=".CreateEvents">
 
     <Button
@@ -36,8 +35,6 @@
         android:ems="10"
         android:hint="Title"
         android:inputType="textPersonName"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.464"
         app:layout_constraintStart_toStartOf="parent"
