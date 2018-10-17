@@ -74,6 +74,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 intent.putExtra("key", eventId.get(i));
                 intent.putExtra("title", eventNames.get(i));
                 intent.putExtra("entries", eventEntries.get(i));
+                intent.putExtra("imageUrl", eventImages.get(i));
                 mContext.startActivity(intent);
 
 

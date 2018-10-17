@@ -87,8 +87,6 @@ class CreateEvent2 : AppCompatActivity() {
                 val database = FirebaseDatabase.getInstance()
                 val myRef = database.reference
 
-
-
                 //recreating Date
                 val mdate: Date = Date()
                 mdate.time = intent.getLongExtra("eventDate", -1)
@@ -107,15 +105,11 @@ class CreateEvent2 : AppCompatActivity() {
                                                     imagePrimaryLink,
                                                     imageSecondaryLink )
 
-
-
-
-
                 myRef.child("events").child(intent.getStringExtra("keyId")).setValue(mEvent)
 
                 //myRef.child("events").child(intent.getStringExtra("keyId")).child("description").setValue(event2)
 
-                Toast.makeText(this, mEvent.eventName + " created!!", Toast.LENGTH_SHORT)
+                Toast.makeText(this, mEvent.eventName + " created!!", Toast.LENGTH_SHORT).show()
 
 
                 val intent= Intent(this, MainActivity::class.java)
@@ -133,84 +127,93 @@ class CreateEvent2 : AppCompatActivity() {
 
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == PICKIMAGE2 && imageUploadStart2)
+        if(data != null)
         {
-            val imageStatus2: TextView = findViewById(R.id.image_status2)
-            //intent contains the Uri of file which is used for uploading
-            val imageUri:Uri = data!!.data
+            if(requestCode == PICKIMAGE2 && imageUploadStart2)
+            {
+                val imageStatus2: TextView = findViewById(R.id.image_status2)
+                //intent contains the Uri of file which is used for uploading
+                val imageUri:Uri = data!!.data
 
 
-            val riversRef = storageRef!!.child("images/").child(eventTitle +"/"  + eventTitle+ "_Secondary"+"."+getFileExtension(imageUri))
-            //imageSecondaryLink = riversRef.downloadUrl.result.toString()
-            val uploadTask = riversRef.putFile(imageUri)
+                val riversRef = storageRef!!.child("images/").child(eventTitle +"/"  + eventTitle+ "_Secondary"+"."+getFileExtension(imageUri))
+                //imageSecondaryLink = riversRef.downloadUrl.result.toString()
+                val uploadTask = riversRef.putFile(imageUri)
 
-            val uploadStarted = "Uploading started"
-            imageStatus2.text = uploadStarted
+                val uploadStarted = "Uploading started"
+                imageStatus2.text = uploadStarted
 
-            uploadTask.addOnFailureListener { exception ->
-                // Handle unsuccessful uploads
+                uploadTask.addOnFailureListener { exception ->
+                    // Handle unsuccessful uploads
 
-                imageStatus2.text = exception.toString()
-            }.addOnSuccessListener {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                // ...
-                val msg = "Done uploading"
-                Toast.makeText(this, "Image uploaded, Ready to Publish", Toast.LENGTH_SHORT).show()
+                    imageStatus2.text = exception.toString()
+                }.addOnSuccessListener {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                    // ...
+                    val msg = "Done uploading"
+                    Toast.makeText(this, "Image uploaded, Ready to Publish", Toast.LENGTH_SHORT).show()
 
-                riversRef.downloadUrl.addOnSuccessListener {
-                    imageSecondaryLink = it.toString()
-                }.addOnFailureListener{
-                    imageSecondaryLink = "Exception"
+                    riversRef.downloadUrl.addOnSuccessListener {
+                        imageSecondaryLink = it.toString()
+                    }.addOnFailureListener{
+                        imageSecondaryLink = "Exception"
+                    }
+                    imageUploaded2 = true
+                    imageStatus2.text = msg
+                }.addOnProgressListener {
+                    val progress: Double = (100.0 * it.bytesTransferred / it.totalByteCount)
+                    val msg = "Progress: $progress%"
+                    imageStatus2.text = msg
                 }
-                imageUploaded2 = true
-                imageStatus2.text = msg
-            }.addOnProgressListener {
-                val progress: Double = (100.0 * it.bytesTransferred / it.totalByteCount)
-                val msg = "Progress: $progress%"
-                imageStatus2.text = msg
+            }
+            else if (requestCode == PICKIMAGE && imageUploadStart) {
+
+                val imageStatus: TextView = findViewById(R.id.image_status)
+                //intent contains the Uri of file which is used for uploading
+                val imageUri = data!!.data
+
+                val riversRef = storageRef!!.child("images/").child(eventTitle +"/" + eventTitle + "_Primary"+"."+getFileExtension(imageUri))
+                //imagePrimaryLink = riversRef.downloadUrl.toString()
+
+                val uploadTask = riversRef.putFile(imageUri)
+
+                val uploadStarted = "Uploading started"
+                imageStatus.text = uploadStarted
+
+                uploadTask.addOnFailureListener { exception ->
+                    // Handle unsuccessful uploads
+
+                    imageStatus.text = exception.toString()
+                }.addOnSuccessListener {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                    // ...
+                    val msg = "Done uploading"
+                    Toast.makeText(this, "Image uploaded", Toast.LENGTH_SHORT).show()
+
+                    riversRef.downloadUrl.addOnSuccessListener {
+                        imagePrimaryLink = it.toString()
+                    }.addOnFailureListener{
+                        imagePrimaryLink = "Exception"
+                    }
+
+
+                    imageUploaded = true
+                    imageStatus.text = msg
+
+                }.addOnProgressListener {
+                    val progress: Double = (100.0 * it.bytesTransferred / it.totalByteCount)
+                    val msg = "Progress: $progress%"
+                    imageStatus.text = msg
+                }
+
             }
         }
-        else if (requestCode == PICKIMAGE && imageUploadStart) {
-
-            val imageStatus: TextView = findViewById(R.id.image_status)
-            //intent contains the Uri of file which is used for uploading
-            val imageUri = data!!.data
-
-            val riversRef = storageRef!!.child("images/").child(eventTitle +"/" + eventTitle + "_Primary"+"."+getFileExtension(imageUri))
-            //imagePrimaryLink = riversRef.downloadUrl.toString()
-
-            val uploadTask = riversRef.putFile(imageUri)
-
-            val uploadStarted = "Uploading started"
-            imageStatus.text = uploadStarted
-
-            uploadTask.addOnFailureListener { exception ->
-                // Handle unsuccessful uploads
-
-                imageStatus.text = exception.toString()
-            }.addOnSuccessListener {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                // ...
-                val msg = "Done uploading"
-                Toast.makeText(this, "Image uploaded", Toast.LENGTH_SHORT).show()
-
-                riversRef.downloadUrl.addOnSuccessListener {
-                    imagePrimaryLink = it.toString()
-                }.addOnFailureListener{
-                    imagePrimaryLink = "Exception"
-                }
-
-
-                imageUploaded = true
-                imageStatus.text = msg
-
-            }.addOnProgressListener {
-                val progress: Double = (100.0 * it.bytesTransferred / it.totalByteCount)
-                val msg = "Progress: $progress%"
-                imageStatus.text = msg
-            }
+        else{
+            Toast.makeText(this, "Image not selected", Toast.LENGTH_SHORT).show()
 
         }
+
+
     }
 
     private fun getFileExtension( uri: Uri): String {

@@ -15,7 +15,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 class Stats : AppCompatActivity() {
 
     var totalRegistrations: Int = 0
-    var str:String = ""
+
 
     val eventListener = object: ValueEventListener {
         override fun onCancelled(p0: DatabaseError) {
@@ -33,14 +33,11 @@ class Stats : AppCompatActivity() {
                 {
                     totalRegistrations = childSnapshot.child("eventRegistrations").childrenCount.toInt()
                     findViewById<TextView>(R.id.registrations_text).text = "Registrations $totalRegistrations"
-                    var pr:Int = (totalRegistrations /intent.getStringExtra("entries").toInt()) * 100
-                    findViewById<ProgressBar>(R.id.registration_progress).progress = 67//pr
+                    var pr:Int = ((totalRegistrations.toDouble() /intent.getStringExtra("entries").toDouble()) * 100.0).toInt()
+                    findViewById<ProgressBar>(R.id.registration_progress).progress = pr//67
 
                     //findViewById<CircleImageView>(R.id.stats_event_image).
-                    Glide.with(this@Stats)
-                            .asBitmap()
-                            .load(RecyclerViewAdapter.eventImages[i])
-                            .into(findViewById<CircleImageView>(R.id.stats_event_image))
+
 
                     break
                 }
@@ -70,6 +67,11 @@ class Stats : AppCompatActivity() {
 
         title.text = intent.getStringExtra("title")
         //registrations.text = "Registrations: " + totalRegistrations.toString()
+
+        Glide.with(this@Stats)
+                .asBitmap()
+                .load(intent.getStringExtra("imageUrl"))
+                .into(findViewById<CircleImageView>(R.id.stats_event_image))
 
 
 
