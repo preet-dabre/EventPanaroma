@@ -209,7 +209,7 @@ class CreateEvent2 : AppCompatActivity() {
             }
         }
         else{
-            Toast.makeText(this, "Image not selected", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Image not selected", Toast.LENGTH_SHORT).show()//
 
         }
 

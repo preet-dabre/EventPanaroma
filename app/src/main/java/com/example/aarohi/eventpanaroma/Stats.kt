@@ -34,7 +34,7 @@ class Stats : AppCompatActivity() {
                     totalRegistrations = childSnapshot.child("eventRegistrations").childrenCount.toInt()
                     findViewById<TextView>(R.id.registrations_text).text = "Registrations $totalRegistrations"
                     var pr:Int = ((totalRegistrations.toDouble() /intent.getStringExtra("entries").toDouble()) * 100.0).toInt()
-                    findViewById<ProgressBar>(R.id.registration_progress).progress = pr//67
+                    findViewById<ProgressBar>(R.id.registration_progress).progress = pr//97
 
                     //findViewById<CircleImageView>(R.id.stats_event_image).
 

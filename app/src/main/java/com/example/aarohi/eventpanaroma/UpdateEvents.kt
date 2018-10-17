@@ -46,7 +46,7 @@ class UpdateEvents : AppCompatActivity() {
                 myRef.child("eventEntries").setValue(uEntries.text.toString().toInt())
             }
 
-            Toast.makeText(this, "Updated", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Updated", Toast.LENGTH_SHORT).show()//
 
             //back to main activity
             val intent= Intent(this, MainActivity::class.java)
