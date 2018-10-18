@@ -3,12 +3,14 @@ package com.example.aarohi.eventpanaroma;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,9 +58,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .load(eventImages.get(i))
                 .into(viewHolder.image);
 
+        String event_title = eventNames.get(i);
+        if(event_title.length() > 27)
+        {
+            event_title = event_title.substring(0, 24) + "...";
+        }
         viewHolder.imageName.setText(eventNames.get(i));
         viewHolder.imageDesc.setText(mEvent.get(i).eventDescription);
         viewHolder.collegeName.setText(mEvent.get(i).college);
+        //if 25 or less okay
+        //if > 25, substring 22 and append ...
+        String longDesc = mEvent.get(i).eventBriefDescription;
+        if(longDesc.length() > 24)
+        {
+            longDesc = longDesc.substring(0, 21) + "...";
+        }
+        viewHolder.longDesc.setText(longDesc);
 
         viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +117,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         RelativeLayout parentLayout;
         TextView imageDesc;
         TextView collegeName;
+        TextView longDesc;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -110,6 +126,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             parentLayout = itemView.findViewById(R.id.parent_layout);
             imageDesc = itemView.findViewById(R.id.event_desc_text);
             collegeName = itemView.findViewById(R.id.collegeName);
+            longDesc  = itemView.findViewById(R.id.long_desc);
 
         }
     }

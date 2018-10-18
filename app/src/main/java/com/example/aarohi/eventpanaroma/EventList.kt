@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ProgressBar
 import com.google.firebase.database.FirebaseDatabase
@@ -34,13 +36,13 @@ class EventList : AppCompatActivity() {
 
         override fun onDataChange(p0: DataSnapshot) {
             mTotalEvents = p0.childrenCount.toInt()
-            var mEvents: MutableList<EventModel> = MutableList(p0.childrenCount.toInt()) {EventModel()}
+            val mEvents: MutableList<EventModel> = MutableList(p0.childrenCount.toInt()) {EventModel()}
             for((i, childSnapshot: DataSnapshot) in p0.children.withIndex())
             {
 
 
                 RecyclerViewAdapter.eventId.add(childSnapshot.key)
-                var a:String = childSnapshot.child("eventEntries").getValue().toString()
+                val a:String = childSnapshot.child("eventEntries").getValue().toString()
                 RecyclerViewAdapter.eventEntries.add(a)
                 mEvents[i] = childSnapshot.getValue<EventModel>(EventModel::class.java)!!
                 mEvents2.add(mEvents[i])
@@ -60,6 +62,13 @@ class EventList : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event_list)
+
+
+        //requestWindowFeature(Window.FEATURE_NO_TITLE) //will hide the title
+        supportActionBar!!.hide() // hide the title bar
+        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
 
         val database = FirebaseDatabase.getInstance()
         val myRef = database.reference

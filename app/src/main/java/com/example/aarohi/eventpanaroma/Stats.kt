@@ -2,6 +2,7 @@ package com.example.aarohi.eventpanaroma
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -49,6 +50,10 @@ class Stats : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stats)
+
+        supportActionBar!!.hide() // hide the title bar
+        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
 
         val database = FirebaseDatabase.getInstance()

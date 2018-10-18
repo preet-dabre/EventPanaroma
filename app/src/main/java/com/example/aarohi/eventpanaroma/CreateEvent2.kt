@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityCompat.requestPermissions
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.view.WindowManager
 import android.webkit.MimeTypeMap
 import android.widget.*
 import com.google.firebase.database.DatabaseReference
@@ -41,6 +42,11 @@ class CreateEvent2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_event2)
+
+        supportActionBar!!.hide() // hide the title bar
+        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
 
         eventTitle = intent.getStringExtra("eventTitle")
         storage = FirebaseStorage.getInstance()
@@ -81,36 +87,44 @@ class CreateEvent2 : AppCompatActivity() {
                 val eventDescription: EditText = this.findViewById(R.id.event_description)
                 val eventBriefDescription: EditText = findViewById(R.id.event_brief_description)
 
-                val database = FirebaseDatabase.getInstance()
-                val myRef = database.reference
+                when{
+                    eventDescription.text.toString().equals("") -> Toast.makeText(this, "Enter One line description", Toast.LENGTH_SHORT).show()
+                    eventDescription.text.toString().equals("") -> Toast.makeText(this, "Enter description", Toast.LENGTH_SHORT).show()
+                    else -> {
+                        val database = FirebaseDatabase.getInstance()
+                        val myRef = database.reference
 
-                //recreating Date
-                val mdate: Date = Date()
-                mdate.time = intent.getLongExtra("eventDate", -1)
+                        //recreating Date
+                        val mdate: Date = Date()
+                        mdate.time = intent.getLongExtra("eventDate", -1)
 
-                //recreating entries
-                val mentries: Int = intent.getIntExtra("eventEntries", -1)
+                        //recreating entries
+                        val mentries: Int = intent.getIntExtra("eventEntries", -1)
 
-                val mEvent: EventModel = EventModel(intent.getStringExtra("eventTitle"),
-                                                    intent.getStringExtra("eventCollege"),
-                                                    intent.getStringExtra("eventLocation"),
-                                                    mdate,
-                                                    intent.getStringExtra("eventDateString"),
-                                                    mentries,
-                                                    eventDescription.text.toString(),
-                                                    eventBriefDescription.text.toString(),
-                                                    imagePrimaryLink,
-                                                    imageSecondaryLink )
-
-                myRef.child("events").child(intent.getStringExtra("keyId")).setValue(mEvent)
-
-                //myRef.child("events").child(intent.getStringExtra("keyId")).child("description").setValue(event2)
-
-                Toast.makeText(this, mEvent.eventName + " created!!", Toast.LENGTH_SHORT).show()
+                        val mEvent: EventModel = EventModel(intent.getStringExtra("eventTitle"),
+                                intent.getStringExtra("eventCollege"),
+                                intent.getStringExtra("eventLocation"),
+                                mdate,
+                                intent.getStringExtra("eventDateString"),
+                                mentries,
+                                eventDescription.text.toString(),
+                                eventBriefDescription.text.toString(),
+                                imagePrimaryLink,
+                                imageSecondaryLink )
 
 
-                val intent= Intent(this, MainActivity::class.java)
-                startActivity(intent)
+                        myRef.child("events").child(intent.getStringExtra("keyId")).setValue(mEvent)
+
+                        //myRef.child("events").child(intent.getStringExtra("keyId")).child("description").setValue(event2)
+
+                        Toast.makeText(this, mEvent.eventName + " created!!", Toast.LENGTH_SHORT).show()
+
+
+                        val intent= Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+
             }
             else
             {
@@ -126,87 +140,9 @@ class CreateEvent2 : AppCompatActivity() {
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(data != null)
         {
-            if(requestCode == PICKIMAGE2 && imageUploadStart2)
-            {
-                //val imageStatus2: TextView = findViewById(R.id.image_status2)
-                //intent contains the Uri of file which is used for uploading
-                val imageUri:Uri = data!!.data
+            val imageUri:Uri = data!!.data
+            imageUploader(imageUri, requestCode)
 
-
-                val riversRef = storageRef!!.child("images/").child(eventTitle +"/"  + eventTitle+ "_Secondary"+"."+getFileExtension(imageUri))
-                //imageSecondaryLink = riversRef.downloadUrl.result.toString()
-                val uploadTask = riversRef.putFile(imageUri)
-
-                //val uploadStarted = "Uploading started"
-                //imageStatus2.text = uploadStarted
-
-                uploadTask.addOnFailureListener { exception ->
-                    // Handle unsuccessful uploads
-
-                    //imageStatus2.text = exception.toString()
-                }.addOnSuccessListener {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                    // ...
-                    val msg = "Done uploading"
-                    Toast.makeText(this, "Image uploaded, Ready to Publish", Toast.LENGTH_SHORT).show()
-
-                    riversRef.downloadUrl.addOnSuccessListener {
-                        imageSecondaryLink = it.toString()
-                    }.addOnFailureListener{
-                        imageSecondaryLink = "Exception"
-                    }
-                    imageUploaded2 = true
-                    //imageStatus2.text = msg
-                }.addOnProgressListener {
-                    val progress: Double = (100.0 * it.bytesTransferred / it.totalByteCount)
-                    //val msg = "Progress: $progress%"
-                    //imageStatus2.text = msg
-                    findViewById<ProgressBar>(R.id.images_progress).progress = progress.toInt()
-                }
-            }
-            else if (requestCode == PICKIMAGE && imageUploadStart) {
-
-                //val imageStatus: TextView = findViewById(R.id.image_status)
-                //intent contains the Uri of file which is used for uploading
-                val imageUri = data!!.data
-
-                val riversRef = storageRef!!.child("images/").child(eventTitle +"/" + eventTitle + "_Primary"+"."+getFileExtension(imageUri))
-                //imagePrimaryLink = riversRef.downloadUrl.toString()
-
-                val uploadTask = riversRef.putFile(imageUri)
-
-                //val uploadStarted = "Uploading started"
-                //imageStatus.text = uploadStarted
-
-                uploadTask.addOnFailureListener { exception ->
-                    // Handle unsuccessful uploads
-
-                    //imageStatus.text = exception.toString()
-                }.addOnSuccessListener {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                    // ...
-                    //val msg = "Done uploading"
-                    /*****/
-                    Toast.makeText(this, "Image uploaded", Toast.LENGTH_SHORT).show()
-
-                    riversRef.downloadUrl.addOnSuccessListener {
-                        imagePrimaryLink = it.toString()
-                    }.addOnFailureListener{
-                        imagePrimaryLink = "Exception"
-                    }
-
-
-                    imageUploaded = true
-                    //imageStatus.text = msg
-
-                }.addOnProgressListener {
-                    val progress: Double = (100.0 * it.bytesTransferred / it.totalByteCount)
-                    //val msg = "Progress: $progress%"
-                    //imageStatus.text = msg
-                    findViewById<ProgressBar>(R.id.imagep_progress).progress = progress.toInt()
-                }
-
-            }
         }
         else{
             Toast.makeText(this, "Image not selected", Toast.LENGTH_SHORT).show()//
@@ -216,6 +152,87 @@ class CreateEvent2 : AppCompatActivity() {
 
     }
 
+    private fun imageUploader(imageUri: Uri, requestCode: Int): Boolean{
+        if(requestCode == PICKIMAGE2 && imageUploadStart2)
+        {
+            //val imageStatus2: TextView = findViewById(R.id.image_status2)
+            //intent contains the Uri of file which is used for uploading
+
+
+            val riversRef = storageRef!!.child("images/").child(eventTitle +"/"  + eventTitle+ "_Secondary"+"."+getFileExtension(imageUri))
+
+            val uploadTask = riversRef.putFile(imageUri)
+
+
+            uploadTask.addOnFailureListener { exception ->
+                // Handle unsuccessful uploads
+
+            }.addOnSuccessListener {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+
+                Toast.makeText(this, "Image uploaded", Toast.LENGTH_SHORT).show()
+
+                riversRef.downloadUrl.addOnSuccessListener {
+                    imageSecondaryLink = it.toString()
+                }.addOnFailureListener{
+                    imageSecondaryLink = "Exception"
+                }
+                imageUploaded2 = true
+                //imageStatus2.text = msg
+            }.addOnProgressListener {
+                val progress: Double = (100.0 * it.bytesTransferred / it.totalByteCount)
+                //val msg = "Progress: $progress%"
+                //imageStatus2.text = msg
+                findViewById<ProgressBar>(R.id.images_progress).progress = progress.toInt()
+            }
+        }
+        else if (requestCode == PICKIMAGE && imageUploadStart) {
+
+            //val imageStatus: TextView = findViewById(R.id.image_status)
+            //intent contains the Uri of file which is used for uploading
+
+
+            val riversRef = storageRef!!.child("images/").child(eventTitle +"/" + eventTitle + "_Primary"+"."+getFileExtension(imageUri))
+            //imagePrimaryLink = riversRef.downloadUrl.toString()
+
+            val uploadTask = riversRef.putFile(imageUri)
+
+            //val uploadStarted = "Uploading started"
+            //imageStatus.text = uploadStarted
+
+            uploadTask.addOnFailureListener { exception ->
+                // Handle unsuccessful uploads
+
+                //imageStatus.text = exception.toString()
+            }.addOnSuccessListener {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                //val msg = "Done uploading"
+                /*****/
+                Toast.makeText(this, "Image uploaded", Toast.LENGTH_SHORT).show()
+
+                riversRef.downloadUrl.addOnSuccessListener {
+                    imagePrimaryLink = it.toString()
+                }.addOnFailureListener{
+                    imagePrimaryLink = "Exception"
+                }
+
+
+                imageUploaded = true
+                //imageStatus.text = msg
+
+            }.addOnProgressListener {
+                val progress: Double = (100.0 * it.bytesTransferred / it.totalByteCount)
+                //val msg = "Progress: $progress%"
+                //imageStatus.text = msg
+                findViewById<ProgressBar>(R.id.imagep_progress).progress = progress.toInt()
+            }
+
+        }
+
+        return true
+    }
     private fun getFileExtension( uri: Uri): String {
         var cr = contentResolver
         var mime = MimeTypeMap.getSingleton()

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.view.WindowManager
 import android.widget.*
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -40,6 +41,10 @@ class CreateEvents : AppCompatActivity(), DatePickerDialog.OnDateSetListener  {
         setContentView(R.layout.activity_create_events)
 
 
+        supportActionBar!!.hide() // hide the title bar
+        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
         //datepicker
         val dateBtn: Button = this.findViewById(R.id.pick_date)
         dateBtn.setOnClickListener{
@@ -59,38 +64,39 @@ class CreateEvents : AppCompatActivity(), DatePickerDialog.OnDateSetListener  {
                 val eventEntries: EditText = findViewById(R.id.event_entries)
                 val eventCollege: EditText = findViewById(R.id.event_college)
 
-
-                val database = FirebaseDatabase.getInstance()
-                val myRef = database.reference
-
-//                val mEvent = Events(
-//                        eventTitle.text.toString(),
-//                        eventCollege.text.toString(),
-//                        eventLocation.text.toString(),
-//                        mEventDate,
-//                        mEventDateString,
-//                        Integer.valueOf(eventEntries.text.toString()))
-
-                val id = myRef.child("events").push().key
-                keyId = id!!
+                when {
+                    eventTitle.text.toString().equals("") -> Toast.makeText(this, "Select a title", Toast.LENGTH_SHORT).show()
+                    eventLocation.text.toString().equals("") -> Toast.makeText(this, "Select a Location", Toast.LENGTH_SHORT).show()
+                    eventCollege.text.toString().equals("") -> Toast.makeText(this, "Select a College", Toast.LENGTH_SHORT).show()
+                    eventEntries.text.toString().equals("") -> Toast.makeText(this, "Enter entries allowed", Toast.LENGTH_SHORT).show()
+                    else -> {
+                        val database = FirebaseDatabase.getInstance()
+                        val myRef = database.reference
 
 
-                //end store data
+                        val id = myRef.child("events").push().key
+                        keyId = id!!
 
 
-                val intent= Intent(this, CreateEvent2::class.java)
-                intent.putExtra("keyId", keyId)
+                        //end store data
 
-                intent.putExtra("eventTitle", eventTitle.text.toString())
-                intent.putExtra("eventCollege", eventCollege.text.toString())
-                intent.putExtra("eventLocation", eventLocation.text.toString())
-                intent.putExtra("eventDate", mEventDate.time)
-                intent.putExtra("eventDateString", mEventDateString)
-                intent.putExtra("eventEntries", Integer.valueOf(eventEntries.text.toString()))
 
-                startActivity(intent)
+                        val intent= Intent(this, CreateEvent2::class.java)
+                        intent.putExtra("keyId", keyId)
 
-            }
+                        intent.putExtra("eventTitle", eventTitle.text.toString())
+                        intent.putExtra("eventCollege", eventCollege.text.toString())
+                        intent.putExtra("eventLocation", eventLocation.text.toString())
+                        intent.putExtra("eventDate", mEventDate.time)
+                        intent.putExtra("eventDateString", mEventDateString)
+                        intent.putExtra("eventEntries", Integer.valueOf(eventEntries.text.toString()))
+
+                        startActivity(intent)
+
+                    }
+                }
+                }
+
             else{
                 Toast.makeText(this, "Pick date first", Toast.LENGTH_SHORT).show()
             }
