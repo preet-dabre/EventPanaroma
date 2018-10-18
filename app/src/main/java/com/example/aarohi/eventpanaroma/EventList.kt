@@ -44,6 +44,7 @@ class EventList : AppCompatActivity() {
                 RecyclerViewAdapter.eventEntries.add(a)
                 mEvents[i] = childSnapshot.getValue<EventModel>(EventModel::class.java)!!
                 mEvents2.add(mEvents[i])
+                RecyclerViewAdapter.mEvent.add(mEvents[i])
 
 
             }

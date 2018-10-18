@@ -17,27 +17,23 @@ class Stats : AppCompatActivity() {
     var totalRegistrations: Int = 0
 
 
-    val eventListener = object: ValueEventListener {
+    private val eventListener = object: ValueEventListener {
         override fun onCancelled(p0: DatabaseError) {
 
         }
 
         override fun onDataChange(p0: DataSnapshot) {
-            var mTotalEvents = p0.childrenCount.toInt()
 
-
+            var mEvent: EventModel = intent.getParcelableExtra("mEvent")
             for((i, childSnapshot: DataSnapshot) in p0.children.withIndex())
             {
-                var keyId: String = childSnapshot.key!!
+                val keyId: String = childSnapshot.key!!
                 if(keyId.equals(intent.getStringExtra("key")))
                 {
                     totalRegistrations = childSnapshot.child("eventRegistrations").childrenCount.toInt()
                     findViewById<TextView>(R.id.registrations_text).text = "Registrations $totalRegistrations"
-                    var pr:Int = ((totalRegistrations.toDouble() /intent.getStringExtra("entries").toDouble()) * 100.0).toInt()
-                    findViewById<ProgressBar>(R.id.registration_progress).progress = pr//97
-
-                    //findViewById<CircleImageView>(R.id.stats_event_image).
-
+                    val pr:Int = ((totalRegistrations.toDouble() /mEvent.eventEntries.toDouble()) * 100.0).toInt()
+                    findViewById<ProgressBar>(R.id.registration_progress).progress = pr
 
                     break
                 }
@@ -57,24 +53,17 @@ class Stats : AppCompatActivity() {
 
         val database = FirebaseDatabase.getInstance()
         val myRef = database.reference
-
-        //myRef.addListenerForSingleValueEvent(eventListener)
+        val mEvent: EventModel = intent.getParcelableExtra("mEvent")
         myRef.child("events").addValueEventListener(eventListener)
 
-        var title: TextView = findViewById(R.id.re_event_title)
-        //var registrations: TextView = findViewById(R.id.registrations_text)
-        var regProgress: ProgressBar = findViewById(R.id.registration_progress)
+        val title: TextView = findViewById(R.id.re_event_title)
+        title.text = mEvent.eventName
 
-        title.text = intent.getStringExtra("title")
-        //registrations.text = "Registrations: " + totalRegistrations.toString()
 
         Glide.with(this@Stats)
                 .asBitmap()
-                .load(intent.getStringExtra("imageUrl"))
+                .load(mEvent.imagePrimaryUrl)
                 .into(findViewById<CircleImageView>(R.id.stats_event_image))
-
-
-
 
     }
 }

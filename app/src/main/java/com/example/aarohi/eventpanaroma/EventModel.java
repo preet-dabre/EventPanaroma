@@ -1,8 +1,10 @@
 package com.example.aarohi.eventpanaroma;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import java.util.Date;
 
-public class EventModel{
+public class EventModel implements Parcelable {
     public String eventName;
     public String college;
     public String location;
@@ -30,6 +32,31 @@ public class EventModel{
 
     public EventModel() {
     }
+
+    protected EventModel(Parcel in) {
+        eventName = in.readString();
+        college = in.readString();
+        location = in.readString();
+        eventDate = new Date(in.readLong());
+        eventDateString = in.readString();
+        eventEntries = in.readInt();
+        eventDescription = in.readString();
+        eventBriefDescription = in.readString();
+        imagePrimaryUrl = in.readString();
+        imageSecondaryUrl = in.readString();
+    }
+
+    public static final Creator<EventModel> CREATOR = new Creator<EventModel>() {
+        @Override
+        public EventModel createFromParcel(Parcel in) {
+            return new EventModel(in);
+        }
+
+        @Override
+        public EventModel[] newArray(int size) {
+            return new EventModel[size];
+        }
+    };
 
     public void setValues(String eventName, String college, String location, Date eventDate, String eventDateString, int eventEntries, String eventDescription, String eventBriefDescription) {
         this.eventName = eventName;
@@ -119,5 +146,24 @@ public class EventModel{
 
     public void setEventBriefDescription(String eventBriefDescription) {
         this.eventBriefDescription = eventBriefDescription;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(eventName);
+        dest.writeString(college);
+        dest.writeString(location);
+        dest.writeLong(eventDate.getTime());
+        dest.writeString(eventDateString);
+        dest.writeInt(eventEntries);
+        dest.writeString(eventDescription);
+        dest.writeString(eventBriefDescription);
+        dest.writeString(imagePrimaryUrl);
+        dest.writeString(imageSecondaryUrl);
     }
 }

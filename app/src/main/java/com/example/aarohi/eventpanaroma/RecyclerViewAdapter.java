@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -29,6 +30,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public static ArrayList<String> eventId = new ArrayList<>();
     public static ArrayList<String> eventEntries = new ArrayList<>();
+    public static ArrayList<EventModel> mEvent = new ArrayList<>();
 
     public static String activity = new String("");
 
@@ -55,6 +57,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .into(viewHolder.image);
 
         viewHolder.imageName.setText(eventNames.get(i));
+        viewHolder.imageDesc.setText(mEvent.get(i).eventDescription);
+        viewHolder.collegeName.setText(mEvent.get(i).college);
 
         viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,10 +78,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 intent.putExtra("key", eventId.get(i));
                 intent.putExtra("title", eventNames.get(i));
                 intent.putExtra("entries", eventEntries.get(i));
-                intent.putExtra("imageUrl", eventImages.get(i));//
+                intent.putExtra("imageUrl", eventImages.get(i));
+                intent.putExtra("mEvent", mEvent.get(i));
                 mContext.startActivity(intent);
-
-
 
 
 
@@ -97,12 +100,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         CircleImageView image;
         TextView imageName;
         RelativeLayout parentLayout;
+        TextView imageDesc;
+        TextView collegeName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.event_image);
             imageName = itemView.findViewById(R.id.event_title_text);
             parentLayout = itemView.findViewById(R.id.parent_layout);
+            imageDesc = itemView.findViewById(R.id.event_desc_text);
+            collegeName = itemView.findViewById(R.id.collegeName);
 
         }
     }
