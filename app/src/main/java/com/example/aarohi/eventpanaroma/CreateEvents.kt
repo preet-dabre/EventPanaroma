@@ -37,7 +37,6 @@ class CreateEvents : AppCompatActivity(), DatePickerDialog.OnDateSetListener  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         setContentView(R.layout.activity_create_events)
 
 
@@ -83,7 +82,6 @@ class CreateEvents : AppCompatActivity(), DatePickerDialog.OnDateSetListener  {
 
                         val intent= Intent(this, CreateEvent2::class.java)
                         intent.putExtra("keyId", keyId)
-
                         intent.putExtra("eventTitle", eventTitle.text.toString())
                         intent.putExtra("eventCollege", eventCollege.text.toString())
                         intent.putExtra("eventLocation", eventLocation.text.toString())
