@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/app_back_blue"
+    android:background="@color/colorPrimary"
     tools:context=".MainActivity">
 
     <Button
@@ -16,7 +16,7 @@
         android:layout_marginTop="204dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:background="#458df9"
+        android:background="#0A46EE"
         android:text="Create Events"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:background="#458df9"
+        android:background="#0A46EE"
         android:text="Manage Events"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +49,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:background="#458df9"
+        android:background="#0A46EE"
         android:text="View Stats"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
