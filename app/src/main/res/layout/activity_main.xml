@@ -18,7 +18,7 @@
         android:layout_marginRight="8dp"
         android:background="@color/colorButton"
         android:text="Create Events"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorButtonText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +35,7 @@
         android:layout_marginRight="8dp"
         android:background="@color/colorButton"
         android:text="Manage Events"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorButtonText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/create_events" />
@@ -51,7 +51,7 @@
         android:layout_marginRight="8dp"
         android:background="@color/colorButton"
         android:text="View Stats"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorButtonText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/manage_events" />
