@@ -10,7 +10,7 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="336dp"
-        android:layout_height="530dp"
+        android:layout_height="600dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -34,14 +34,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="56dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:ems="10"
                 android:hint="Title"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.462"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -98,8 +97,8 @@
 
             <TextView
                 android:id="@+id/event_date_text"
-                android:layout_width="154dp"
-                android:layout_height="47dp"
+                android:layout_width="104dp"
+                android:layout_height="52dp"
                 android:layout_marginStart="68dp"
                 android:layout_marginLeft="68dp"
                 android:layout_marginTop="8dp"
@@ -107,8 +106,7 @@
                 android:text="Pick a Date"
                 app:layout_constraintBottom_toTopOf="@+id/ce_create_event"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/event_entries"
-                app:layout_constraintVertical_bias="0.523" />
+                app:layout_constraintTop_toBottomOf="@+id/event_entries" />
 
             <Button
                 android:id="@+id/pick_date"
@@ -120,14 +118,15 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
-                android:background="@color/colorButtonLight"
+                android:background="@color/colorButton"
                 android:text="Pick Date"
-                android:textColor="@color/colorButtonTextLight"
+                android:textColor="@color/colorButtonText"
                 app:layout_constraintBottom_toTopOf="@+id/ce_create_event"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.278"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/event_date_text"
-                app:layout_constraintTop_toBottomOf="@+id/event_entries" />
+                app:layout_constraintTop_toBottomOf="@+id/event_entries"
+                app:layout_constraintVertical_bias="0.458" />
 
             <Button
                 android:id="@+id/ce_create_event"
@@ -137,7 +136,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="60dp"
                 android:background="@color/colorButtonLight"
                 android:text="Continue"
                 android:textColor="@color/colorButtonTextLight"
